@@ -10,30 +10,17 @@ It is implemented on an FPGA platform and can be controlled using a Node.js web 
 ### ALU Specifications
 The ALU supports the following operations on **16-bit Q8.7 fixed-point numbers**:
 
-| Operation | Description |
-|----------|-------------|
-| **ADD**  | Fixed-point addition |
-| **SUB**  | Fixed-point subtraction |
-| **MUL**  | Fixed-point multiplication (Q8.7 × Q8.7 → Q8.7) |
-| **AND**  | Bitwise AND |
-| **OR**   | Bitwise OR |
-| **NOT**  | Bitwise NOT |
-| **XOR**  | Bitwise XOR |
-
-All operations are implemented in hardware for efficient execution within the Tiny CPU datapath.
-
-### Opcode Table
 The Tiny CPU uses a simple opcode-based protocol to trigger ALU operations:
 
-| Opcode | Mnemonic | Operation |
-|--------|----------|-----------|
-| **0** | **NOP** | No operation |
-| **1** | **ADD** | a + b |
-| **2** | **SUB** | a − b |
-| **3** | **MUL** | a × b (Q8.7) |
-| **4** | **AND** | a AND b |
-| **5** | **OR**  | a OR b |
-| **6** | **NOT** | NOT a |
+| Opcode | Mnemonic | Operation | Description |
+|--------|----------|-----------|-------------|
+| **0** | **NOP** | No operation| Fixed-point addition |
+| **1** | **ADD** | a + b |       Fixed-point subtraction |
+| **2** | **SUB** | a − b |       Fixed-point multiplication (Q8.7 × Q8.7 → Q8.7) |
+| **3** | **MUL** | a × b (Q8.7)|  Bitwise AND |
+| **4** | **AND** | a AND b |     Bitwise OR |
+| **5** | **OR**  | a OR b |      Bitwise NOT |
+| **6** | **NOT** | NOT a |       Bitwise XOR |
 | **7** | **XOR** | a XOR b |
 
 Opcodes above can be extended for branching, memory access, or custom instructions if needed.
