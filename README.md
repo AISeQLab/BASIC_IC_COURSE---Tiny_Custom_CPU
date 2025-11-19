@@ -2,7 +2,7 @@
 
 ### Introduction
 
-<img src="Figure/background.jpg" alt="System Setup" width="500">
+<img src="Figure/Background.jpg" alt="System Setup" width="500">
 
 This project demonstrates a **Tiny Custom CPU** featuring a lightweight **16-bit ALU** designed for fixed-point arithmetic using the **Q8.7 format**.  
 The CPU executes arithmetic and logic operations based on opcodes received via UART.  
