@@ -1,11 +1,13 @@
- pypandoc
-
-content = """## Tiny_Custom_CPU_ALU_Q8_7
+## Tiny_Custom_CPU
 
 ### Introduction
 This project demonstrates a **Tiny Custom CPU** featuring a lightweight **16-bit ALU** designed for fixed-point arithmetic using the **Q8.7 format**.  
 The CPU executes arithmetic and logic operations based on opcodes received via UART.  
 It is implemented on an FPGA platform and can be controlled using a Node.js web interface for real-time computation.
+
+> **Note:**  
+> This CPU architecture is essentially equivalent to a **Processing Element (PE)** in a **Coarse-Grained Reconfigurable Architecture (CGRA)**.  
+> It does **not** follow any standard CPU architecture such as RISC-V, ARM, or MIPS.
 
 ### ALU Specifications
 The ALU supports the following operations on **16-bit Q8.7 fixed-point numbers**:
