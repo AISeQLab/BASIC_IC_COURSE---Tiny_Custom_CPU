@@ -1,6 +1,9 @@
 ## Tiny_Custom_CPU
 
 ### Introduction
+
+<img src="Figure/background.png" alt="System Setup" width="500">
+
 This project demonstrates a **Tiny Custom CPU** featuring a lightweight **16-bit ALU** designed for fixed-point arithmetic using the **Q8.7 format**.  
 The CPU executes arithmetic and logic operations based on opcodes received via UART.  
 It is implemented on an FPGA platform and can be controlled using a Node.js web interface for real-time computation.
