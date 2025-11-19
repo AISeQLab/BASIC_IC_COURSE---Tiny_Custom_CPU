@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FPGA Calculator - AISeQ Lab</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #f2f6fa;
+        }
+
+        .calc-card {
+            max-width: 420px;
+            margin: 40px auto;
+            border-radius: 16px;
+            padding: 25px;
+            background: white;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+        }
+
+        .result-box {
+            font-size: 1.8rem;
+            font-weight: 600;
+            text-align: center;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 12px;
+            background: #e9f5ff;
+            border: 1px solid #bde0ff;
+            display: none;
+        }
+
+        .logo-box {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .logo-box img {
+            width: 100px;
+            user-select: none;
+        }
+
+        .btn-calc {
+            width: 100%;
+            font-size: 1.2rem;
+            padding: 12px;
+            border-radius: 10px;
+        }
+
+        .btn-clear {
+            width: 100%;
+            font-size: 1.1rem;
+            padding: 10px;
+            margin-top: 10px;
+            background: #e1e1e1;
+            border-radius: 10px;
+        }
+
+        /* LED Panel */
+        .led-panel {
+            margin-top: 18px;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 5px;
+        }
+
+        .led {
+            width: 14px;
+            height: 26px;
+            border-radius: 4px;
+            background: #5A4B00;
+            border: 2px solid #3A3200;
+            transition: 0.2s;
+        }
+
+        .led.on {
+            background: #FFD447;
+            border-color: #FFE08C;
+            box-shadow: 0 0 10px #FFD447;
+        }
+
+        .led-label {
+            text-align: center;
+            font-size: 0.7rem;
+            margin-top: 3px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="calc-card">
+
+    <div class="logo-box">
+        <img src="AISeQ.png" alt="AISeQ Lab Logo">
+    </div>
+
+    <h2 class="text-center fw-bold mb-3">Tiny Custom CPU</h2>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">Opcode:</label>
+        <select id="op" class="form-select">
+            <option value="1">ADD</option>
+            <option value="2">SUB</option>
+            <option value="3">MUL</option>
+            <option value="4">AND</option>
+            <option value="5">OR</option>
+            <option value="6">NOT</option>
+            <option value="7">XOR</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">A:</label>
+        <input id="a" type="text" class="form-control" placeholder="Enter value…">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">B:</label>
+        <input id="b" type="text" class="form-control" placeholder="Enter value…">
+    </div>
+
+    <button class="btn btn-primary btn-calc" onclick="run()">Compute</button>
+    <button class="btn btn-secondary btn-clear" onclick="clearAll()">Clear</button>
+
+    <div id="output" class="result-box"></div>
+
+    <!-- LED panel -->
+    <div id="ledPanel" class="led-panel" style="display:none;">
+        <div class="text-center">
+            <div class="led" id="led7"></div>
+            <div class="led-label">7</div>
+        </div>
+        <div class="text-center">
+            <div class="led" id="led6"></div>
+            <div class="led-label">6</div>
+        </div>
+        <div class="text-center">
+            <div class="led" id="led5"></div>
+            <div class="led-label">5</div>
+        </div>
+        <div class="text-center">
+            <div class="led" id="led4"></div>
+            <div class="led-label">4</div>
+        </div>
+        <div class="text-center">
+            <div class="led" id="led3"></div>
+            <div class="led-label">3</div>
+        </div>
+        <div class="text-center">
+            <div class="led" id="led2"></div>
+            <div class="led-label">2</div>
+        </div>
+        <div class="text-center">
+            <div class="led" id="led1"></div>
+            <div class="led-label">1</div>
+        </div>
+        <div class="text-center">
+            <div class="led" id="led0"></div>
+            <div class="led-label">0</div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+function updateLEDs(binary16) {
+    document.getElementById("ledPanel").style.display = "flex";
+
+    const top8 = binary16.substring(0, 8);
+
+    for (let i = 0; i < 8; i++) {
+        const led = document.getElementById("led" + (7 - i));
+        if (top8[i] === "1") led.classList.add("on");
+        else led.classList.remove("on");
+    }
+}
+
+function run() {
+    fetch("/calc", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            opcode: Number(document.getElementById("op").value),
+            a: document.getElementById("a").value,
+            b: document.getElementById("b").value
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        const out = document.getElementById("output");
+
+        if (data.error) {
+            out.style.display = "block";
+            out.style.background = "#ffe3e3";
+            out.style.border = "1px solid #ffb8b8";
+            out.innerText = "ERROR";
+        } else {
+            out.style.display = "block";
+            out.style.background = "#e9f5ff";
+            out.style.border = "1px solid #bde0ff";
+
+            // Only show the number result (NOT binary)
+            const num = data.result.split("\n")[0];
+            out.innerText = num;
+
+            // get 16-bit binary from result
+            const match = data.result.match(/([01]{16})/);
+            if (match) updateLEDs(match[1]);
+        }
+    });
+}
+
+function clearAll() {
+    document.getElementById("a").value = "";
+    document.getElementById("b").value = "";
+    document.getElementById("output").style.display = "none";
+
+    document.getElementById("ledPanel").style.display = "none";
+
+    for (let i = 0; i < 8; i++) {
+        document.getElementById("led" + i).classList.remove("on");
+    }
+}
+</script>
+
+</body>
+</html>
