@@ -34,8 +34,8 @@ Opcodes above can be extended for branching, memory access, or custom instructio
 1. **Hardware Platform:** Any FPGA supporting UART communication  
 2. **CPU Components:**  
    - 16-bit ALU (Q8.7 fixed-point)  
-   - Instruction decoder  
-   - Register file (R0, R1, ACC)  
+   - 8-bit instruction buffer  
+   - 16-bit input/output buffer (a, b, c)  
    - UART RX/TX module  
 3. **Software Components:**  
    - C code for sending opcodes and operands  
@@ -44,9 +44,9 @@ Opcodes above can be extended for branching, memory access, or custom instructio
 5. **Communication:** Node.js → C program → UART → Tiny CPU → result returned to web UI  
 
 ### Setup
-The figure below illustrates the complete setup connecting the web browser, Node.js server, and FPGA running the Tiny CPU.
+The figure below illustrates the complete setup, where the host PC runs both Node.js and the C backend, which communicate with the Tiny CPU on the FPGA over UART.
 
-<img src="Figure/setup.png" alt="System Setup" width="500">
+<img src="Figure/Setup.png" alt="System Setup" width="500">
 
 ### Video Tutorial
 The tutorial explaining the hardware and software workflow is split into two parts:
