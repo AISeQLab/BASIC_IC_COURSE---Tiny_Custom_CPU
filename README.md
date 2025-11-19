@@ -49,13 +49,9 @@ The figure below illustrates the complete setup, where the host PC runs both Nod
 <img src="Figure/Setup.png" alt="System Setup" width="500">
 
 ### Video Tutorial
-The tutorial explaining the hardware and software workflow is split into two parts:
+The tutorial explaining the hardware and software workflow is in the below link:
 
-- **Part 1 – Hardware Design & ALU Explanation**  
-  https://youtu.be/NQ5qTkZTr5I
-
-- **Part 2 – Node.js Server & UART Integration**  
-  https://youtu.be/UQM3CLi0w9A
+ https://youtu.be/II-RIjKtK2Q
 
 ### Author
 Pham Hoai Luan  
